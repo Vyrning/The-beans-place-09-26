@@ -192,7 +192,17 @@ export default function HeroSection(){
                         })}                   
                         >
                         SHOP COFFEE ☕
+
                     </Button>
+                    <Button
+                        variant="outline"
+                        size="lg"                                       
+                        onClick={() =>
+                            document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })
+                        }>
+                        OUR STORY
+                    </Button>
+ 
                 </motion.div>
 
                         {/* trust indicators - appear last, after the buttons */}
