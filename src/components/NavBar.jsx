@@ -121,7 +121,7 @@ export default function NavBar(){
             animate ={{y: 0, opacity: 1}}
             transition ={{duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94]}}
         >
-            <div className = "mx-auto flex w-full max-w-7xl items-center justify between px-4 py-3 md:px-8">
+            <div className = "mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 md:px-8">
             
             <a href="#home" className="brand">
                 <img src={logo} alt="Beans Place Logo" className="logo h-12 w-auto md:h-14"/>
@@ -177,7 +177,7 @@ export default function NavBar(){
                         transition={{duration: 0.3, ease: "easeInOut"}}
                     >
                         <nav className="flex flex-col gap-4 px-6 pb-6 pt-2">
-                            <a href="#home" onClick={{closeMenu}} className="text-base font-semibold" >
+                            <a href="#home" onClick={closeMenu} className="text-base font-semibold" >
                                 Home
                             </a>
                             <a href="#shop" onClick={closeMenu} className = "text-base font-semibold">
@@ -191,7 +191,7 @@ export default function NavBar(){
                             </a>
 
                             <Button
-                                variants="accent"
+                                variant="accent"
                                 size="sm"
                                 className="mt-2 w-full"
                                 onClick={{closeMenu}}                           
