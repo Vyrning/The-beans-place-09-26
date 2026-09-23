@@ -362,6 +362,7 @@ function ContactFormInline(){
             onSubmit = {handleSubmit}
             className = "contact-form-card"
             initial = {{opacity: 0, y: 40}}
+            whileInView = {{opacity: 1, y: 0}}
             viewport={{once: true}}
             transition={{duration: 0.6, delay: 0.1}}
         >
@@ -510,7 +511,7 @@ export default function ContactSection() {
                     <motion.div
                         className="contact-pill"
                         initial={{opacity: 0, scale: 0.9}}
-                        whileiInView={{opacity: 1, scale: 1}}
+                        whileInView={{opacity: 1, scale: 1}}
                         viewport={{once: true}}
                     >
                         <span>✦ Connect and Collaborate</span>
