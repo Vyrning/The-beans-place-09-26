@@ -451,7 +451,7 @@ function ContactFormInline(){
                     ) : status === "sent" ? (
                         <span className="flex items-center gap-2">
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/>
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 1314 4L19 7"/>
                             </svg>
                             Message Sent !
                         </span>
@@ -548,13 +548,13 @@ export default function ContactSection() {
                                     <TiltCard
                                         href={channel.href}
                                         target={channel.href.startsWith("http") ? "_blank" : undefined}
-                                        rel={channel.href.startsWith("http") ? "noopener ferrer" : undefined}
+                                        rel={channel.href.startsWith("http") ? "noopener noreferrer" : undefined}
                                         className="contact-card-link"
                                     >
                                     <div className="contact-card">
                                         <div className="contact-card-accent" style={{background: channel.accentColor}} />
                                         <div className="contact-card-content">
-                                            <div className={`contact-card-icon bg-gradient-to-br ${channel.gradient}`}>
+                                            <div className={`contact-card-icon bg-linear-to-br ${channel.gradient}`}>
                                                 {channel.icon}
                                             </div>
                                             <div className="contact-card-text">
@@ -563,7 +563,7 @@ export default function ContactSection() {
                                             </div>
                                             <div className="contact-card-arrow">
                                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 01-4 4m4-4H3" />
                                                 </svg>
                                             </div>
                                         </div>
