@@ -517,7 +517,7 @@ export default function ContactSection() {
                     </motion.div>
 
                     <h1 className="h1-stack" style={{color: "var(--cream"}}>
-                        GET IN 
+                       Lets Get In Touch 
                         <br/>
                         <span className="muted" style={{color: "var(--amber)"}}>
                             TOUCH
@@ -580,9 +580,11 @@ export default function ContactSection() {
                             <span className="contact-social-label">Follow Us</span>
                             <div className="contact-social-icons">
                                 {[
-                                    {name: "Instagram", href:"https://instagram.com", icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4."/>
-                                    </svg> }
+                                    { name: "Instagram", href: "https://instagram.com", icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M12 2.163c3.604 0 6.72 2.116 6.72 4.777 0 2.66-3.116 4.777-6.72 4.777-3.605 0-6.72-2.117-6.72-4.777 0-2.662 3.115-4.777 6.72-4.777Zm0 20.838c-3.605 0-6.72-2.116-6.72-4.778C5.28 14.499 8.396 12.383 12 12.383c3.604 0 6.72 2.116 6.72 4.778 0 2.661-3.115 4.778-6.72 4.778Zm-1.269-8.232l3.589-3.59a1.002 1.002 0 0 0-1.415-1.414L11 10.172l-1.289-1.29a1.002 1.002 0 0 0-1.414 1.414l3.589 3.59h-7.178l3.59 3.588a1.002 1.002 0 0 0 1.414-1.414l-3.589-3.588h7.178l-3.59-3.59Z" /></svg> },
+
+{ name: "Facebook", href: "https://facebook.com", icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z" /></svg> },
+
+{ name: "X / Twitter", href: "#", icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M13.6823 10.6188L20.8311 13.113H12.4604v3.4044h5.8615v1.9875H12.4604v3.4044h3.0832v1.9875c0 2.1645-1.4766 3.4044-3.975 3.4044c-2.6812 0-4.1618-1.746-4.1618-4.625v-1.9875H3.6375v-1.9875h3.5812v-3.4044H3.6375v-1.9875c0-2.1645 1.4766-3.4044 3.975-3.4044c2.6812 0 4.1618 1.746 4.1618 4.625v1.9875h3.975Zm-4.1618-1.9875c0-1.746-1.0854-2.9062-2.9062-2.9062s-2.9062 1.1602-2.9062 2.9062 1.0854 2.9062 2.9062 2.9062 2.9062-1.1602 2.9062-2.9062Z" /></svg> }
                                 ].map((social) => (
                                     <a
                                         key={social.name}
