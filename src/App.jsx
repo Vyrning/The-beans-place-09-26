@@ -109,7 +109,7 @@ export default function App(){
 
             {/* Contact */}
             <section className = "bga-cta" id="contact">
-                <ContactSection />
+            <ContactSection />
             </section>
 
             {/* Footer */}
