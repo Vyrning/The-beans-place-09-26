@@ -23,8 +23,7 @@
 // STEP 1: Import motion from "framer-motion"
 
 /* --- YOUR IMPORTS GO HERE --- */
-import {motion} from "framer-motion";
-
+import { motion } from "framer-motion";
 
 // STEP 2: Create and export the RibbonTicker component
 // export default function RibbonTicker() { ... }
@@ -67,10 +66,8 @@ import {motion} from "framer-motion";
 // Look for the @keyframes ribbon-scroll rule.
 
 /* --- YOUR COMPONENT CODE GOES HERE --- */
-export default function RibbonTicker(){
-    
-
-    const blends =[
+export default function RibbonTicker() {
+    const blends = [
         "Jamaican Blue Mountain",
         "Yirgacheffe",
         "Tanzania Peaberry",
@@ -88,34 +85,32 @@ export default function RibbonTicker(){
         "Red Sulawesi"
     ];
 
-    //...
-    const items = [...blends,... blends];
+    // "..." (spread) copies the array's items, so this listst the blends twice.
+    // The CSS scrolls left by exactly half the width and snaps back - with an identical second half, the reset is invisible and the loop looks endlesss
 
-
+    const items = [...blends, ...blends];
 
     return (
+        // Outer container - CSS clisp whatever scrolls past the edges
         <div className="ribbon-ticker-container">
             <div className="ribbon-ticker">
+                {/* The track is the strip that actually slides sideways */}
                 <div className="ribbon-track">
-                    {/* console.log here */}
-                    {console.log("items before map:", items)}
                     {items.map((name, i) => (
-                        // console.log
-                       
                         <motion.span
+                            // Index is a safe key here: the list never reorders
                             key={i}
-                            className = "ribbon-item"
-                            whileHover = {{scale: 1.1, color: "#f0b955"}}
-                            transition = {{type: "spring", stiffness: "300"}}
-                        >
+                            className="ribbon-item"
+                            // While hovered: grow to 110% and turn amber
+                            whileHover={{ scale: 1.1, color: "#f0b955" }}
+                            // Spring = bouncy rather than linear; higher stiffness is snappier
+                            transition={{ type: "spring", stiffness: 300 }}>
+                            {/* Blend name plus a star separator */}
                             {name} <span className="ribbon-dot">✦</span>
                         </motion.span>
-                    ))};
+                    ))}
                 </div>
             </div>
         </div>
-
-
     );
-
-};
+}

@@ -29,13 +29,6 @@
 // Import the logo: import logo from "../assets/Beans_logo.png"
 
 /* --- YOUR IMPORTS GO HERE --- */
-//useEffect -> runs after a render --> holds Dom reference across renders
- import {useEffect, useRef} from "react"
- import L from "leaflet";
- import "leaflet/dist/leaflet.css";
- import Seperator from "./ui/Separator";
- import ScrollReveal from "./ui/ScrollReveal";
- import logo from "../assets/Beans_logo.png";
 
 // STEP 2: Navigation data (outside the component)
 // Create a `navigation` object with these keys:
@@ -56,7 +49,6 @@
 
 /* --- YOUR DATA OBJECTS GO HERE --- */
 
-
 // STEP 3: LocationMap component (helper component)
 // function LocationMap() { ... }
 //   - Use useRef for mapRef (DOM element) and mapInstance (Leaflet map)
@@ -67,7 +59,6 @@
 //   - Render: <div ref={mapRef} className="footer-map" />
 
 /* --- YOUR LOCATIONMAP COMPONENT GOES HERE --- */
-
 
 // STEP 4: Create and export FooterSection
 // export default function FooterSection() { ... }
@@ -85,28 +76,43 @@
 //       - Copyright line using {currentYear}
 
 /* --- YOUR COMPONENT CODE GOES HERE --- */
+// React Hooks: useEffect runs code after a render; useRef stores a value / DOM reference that survives re-renders without causing one
+import { useEffect, useRef } from "react";
+// Leaflet: library for interactive maps
+import L from "leaflet";
+// Leaflet's required stylsheet
+import "leaflet/dist/leaflet.css";
+// Custom reusable UI components
+import Separator from "./ui/Separator";
+import ScrollReveal from "./ui/ScrollReveal";
+import logo from "../assets/Beans_logo.png";
 
-
+// "navigation" holds all the footer link data in one object, so we can loop over it later with .map() to build the lists.
 const navigation = {
+    // Links for the "shop" column (each has a display text + a URL )
     shop: [
-        {name: "All Coffee", href: "#shop" },
-        {name: "Single Origin" , href: "#shop" },
-        {name: "Blends" , href: "#shop"},
-        {name: "Subscriptions", href: "#" },
+        { name: "All Coffee", href: "#shop" },
+        { name: "Single Origin", href: "#shop" },
+        { name: "Blends", href: "#shop" },
+        { name: "Subscriptions", href: "#" }
     ],
+    // Links for the "company" column
     company: [
-        {name: "About", href: "#about" },
-        {name: "Our Roastery" , href: "#about" },
-        {name: "Careers" , href: "#"},
-        {name: "Press", href: "#" },
+        { name: "About", href: "#about" },
+        { name: "Our Roastery", href: "#about" },
+        { name: "Careers", href: "#" },
+        { name: "Press", href: "#" }
     ],
+    // Links for the "support" column
     support: [
-        {name: "Contact Us", href: "#contact" },
-        {name: "Shipping & Return" , href: "#" },
-        {name: "FAQ" , href: "#"},
-        {name: "Wholesale", href: "contact" },
+        { name: "Contact Us", href: "#contact" },
+        { name: "Shipping & Returns", href: "#" },
+        { name: "FAQ", href: "#" },
+        { name: "Wholesale", href: "#contact" }
     ],
+    // Social Links - each "icon" is a function returning an svg logo
     social: [
+        // Facebook
         {
             name: "Facebook",
             href: "#",
@@ -120,6 +126,7 @@ const navigation = {
                 </svg>
             )
         },
+        // Instagram
         {
             name: "Instagram",
             href: "#",
@@ -133,6 +140,7 @@ const navigation = {
                 </svg>
             )
         },
+        // X (formerly Twitter)
         {
             name: "X",
             href: "#",
@@ -143,39 +151,38 @@ const navigation = {
             )
         }
     ]
- 
-
 };
 
-
+// Grab the current year once so the copyright line stay up to date
 const currentYear = new Date().getFullYear();
 
-
-
-//leaflet map
+// Leaflet map component
 function LocationMap() {
-
+    // mapRef -> the <div> the map draws into
     const mapRef = useRef(null);
+
+    // mapInstance -> stores the created map so we don't build it twice
     const mapInstance = useRef(null);
 
-
+    // Runs once after the component mounts ( empty [] at the end = run once )
     useEffect(() => {
-        //stop if the map already exists
-        if(mapInstance.current || !mapRef.current) return;
+        // Stop if the map already exists or the target div isn't ready
+        if (mapInstance.current || !mapRef.current) return;
 
-        //map coords
+        // Coordinates the map centers on
         const lat = 39.7386;
         const lng = -104.3256;
 
-
-        const map = L.map(mapRef.current,{
-
-            center: [lat,lng],
+        // Create the map with its options
+        const map = L.map(mapRef.current, {
+            center: [lat, lng],
             zoom: 14,
             scrollWheelZoom: false,
             zoomControl: true,
             attributionControl: true
         });
+
+        // Use a warm-toned tile layer
         L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
             attribution:
                 '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
@@ -212,65 +219,60 @@ function LocationMap() {
                 </div>`
             );
 
+        // Remember the finished map (used by the guard clause above)
+        mapInstance.current = map;
 
-        mapInstance.current =  map;
-
-        //cleanup on mount
+        // Cleanup: remove the map if the component unmounts (prevent leaks)
         return () => {
             map.remove();
             mapInstance.current = null;
         };
-
-
-
     }, []);
 
-        //the empty div leaflet fills with the map
-        return (
-            <div ref= {mapRef} className= "footer-map" style = {{ width: "100%", overflow:"hidden"}}/>
-        );
-
-};
-
-
-
-export default function FooterSection(){
-
     return (
-        <footer className = "footer">
-            <div className = "mx-auto max-w-7x1 px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32 2x1:max-w-400">
-                {/* Map - scrollReveal fades it up into view */}
+        // The empty div Leaflet fills with the map
+        <div ref={mapRef} className="footer-map" style={{ width: "100%", overflow: "hidden" }} />
+    );
+}
+
+// The main footer component used on the page
+export default function FooterSection() {
+    return (
+        <footer className="footer">
+            <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:pt-32 2xl:max-w-400">
+                {/* Map (wrapped in ScrollReveal so it fades up into view on scroll) */}
                 <ScrollReveal animation="fadeUp">
                     <LocationMap />
                 </ScrollReveal>
 
+                {/* Footer columns (2 columns on small screens, 4 on medium+) */}
+                <div className="mt-16 grid grid-cols-2 gap-8 md:grid-cols-4">
+                    {/* First column: logo, description, and social icons */}
+                    <ScrollReveal animation="fadeUp" className="col-span-2 md:col-span-1 space-y-4">
+                        <img
+                            alt="The Beans Place Logo"
+                            src={logo}
+                            className="h-24 w-auto place-self-center md:place-self-auto"
+                        />
+                        <p className="footer-description justify-self-center text-center md:justify-self-auto md:text-left">
+                            Premium coffee beans, roasted to order and shipped fresh. From our
+                            roastery to your cup since 2012
+                        </p>
+                        {/* Loop over the social links, rendering each icon as a link */}
+                        <div className="flex gap-x-6 justify-self-center md:justify-self-auto">
+                            {navigation.social.map((item) => (
+                                <a
+                                    key={item.name}
+                                    href={item.href}
+                                    className="text-white/70 transition-colors hover:textd-(--amber) duration-200"
+                                    aria-label={item.name}>
+                                    <item.icon aria-hidden="true" className="size-6" />
+                                </a>
+                            ))}
+                        </div>
+                    </ScrollReveal>
 
-            {/* Link columns */}
-            <div className = "mt-16 grid grid-cols-2 gap-8 md:grid-cols-4">
-                {/* Logo and social icons */}
-                <ScrollReveal animation="fadeUp" className="col-span-2 md:col-span-1 space-y-4">
-                    <img
-                        alt="the Beans Place Logo"
-                        src={logo}
-                        className="h-24 w-auto place-self-center md:place-self-auto"
-                    />
-                    <p className= "footer-description justify-self-center text-center md:justify-self-auto md:text-left">
-                        Premium coffee beans, roasted to order and shipped fresh. From our roastery to your cup since 2012
-                    </p>
-                    {/* one link per social entry, icon only */}
-                    <div className="flex gap-x-6 justify-self-center md:justify-self-auto">
-                        {navigation.social.map((item) => (
-                            <a
-                                key={item.name}
-                                href={item.href}
-                                className="text-white/70 transition-colors hover:text-(--amber) duration-200"
-                                aria-label={item.name}>
-                                <item.icon aria-hidden="true" className="size-6" />
-                            </a>
-                        ))}                      
-                    </div>
-                </ScrollReveal>
-                {/* The three link columns, each revealing after the last */}
+                    {/* Shop column - built by looping over navigation. shop */}
                     <ScrollReveal animation="fadeUp" delay={0.1}>
                         <h4 className="footer-col">Shop</h4>
                         <ul role="list" className="footer-links mt-4">
@@ -282,6 +284,7 @@ export default function FooterSection(){
                         </ul>
                     </ScrollReveal>
 
+                    {/* Company column - delay 0.2 = reveal just after shop */}
                     <ScrollReveal animation="fadeUp" delay={0.2}>
                         <h4 className="footer-col">Company</h4>
                         <ul role="list" className="footer-links mt-4">
@@ -293,6 +296,7 @@ export default function FooterSection(){
                         </ul>
                     </ScrollReveal>
 
+                    {/* Support column - delay 0.3 = reveal last */}
                     <ScrollReveal animation="fadeUp" delay={0.3}>
                         <h4 className="footer-col">Support</h4>
                         <ul role="list" className="footer-links mt-4">
@@ -303,16 +307,16 @@ export default function FooterSection(){
                             ))}
                         </ul>
                     </ScrollReveal>
-            </div>
-
-            
-                <Seperator className = "mt-16 mb-6"/>
-                
-                <div className="footer-bottom">
-                        <p>&copy; {currentYear} The Beans Place, LLC. All Rights Reserved.</p>
                 </div>
 
+                {/* Divider - line above the copyright row */}
+                <Separator className="mt-16 mb-6" />
+
+                {/* Bottom bar with the dynamic copright year */}
+                <div className="footer-bottom">
+                    <p>&copy; {currentYear} The Beans Place, LLC. All rights reserved.</p>
+                </div>
             </div>
         </footer>
     );
-};
+}

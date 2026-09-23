@@ -29,7 +29,8 @@
 import Button from "./ui/Button";
 import Badge from "./ui/Badge";
 import Separator from "./ui/Separator";
-import ScrollReveal, {StaggerContainer, StaggerItem} from "./ui/ScrollReveal";
+// ScrollReveal: Animates on scroll. Stagger*: animates a group one after another
+import ScrollReveal, { StaggerContainer, StaggerItem } from "./ui/ScrollReveal";
 import AnimatedCounter from "./ui/AnimatedCounter";
 
 // STEP 2: Define the perks array (outside the component)
@@ -41,7 +42,6 @@ import AnimatedCounter from "./ui/AnimatedCounter";
 // ];
 
 /* --- YOUR PERKS DATA GOES HERE --- */
-
 
 // STEP 3: Create and export CtaSection
 // export default function CtaSection() { ... }
@@ -95,40 +95,39 @@ const perks = [
     { icon: "♻️", label: "Eco-Friendly Bags" }
 ];
 
-export default function CtaSectoin() {
-    return(
+export default function CtaSection() {
+    return (
         <div className="cta-section">
-            {/* Header - rising delays (0,0.1,0.2....etc) */}
             <ScrollReveal animation="fadeUp" delay={0}>
-                <Badge variant ="accent" className="mb-6">
-                    ☕ Fresh Roasts Daily
+                <Badge variant="accent" className="mb-6">
+                    Fresh Roasts Daily
                 </Badge>
             </ScrollReveal>
 
-            <ScrollReveal animation="fadeUp" delay={.1}>
+            <ScrollReveal animation="fadeUp" delay={0.1}>
                 <h2>
-                    Brewed With Passion,
-                    <br/>
+                    Brwed with Passion,
+                    <br />
                     Delivered Fresh
                 </h2>
             </ScrollReveal>
 
-            {/* Decorative divider: mx-auto centers it, mx-w-48 caps its width */}
-            <ScrollReveal animation="fadeIn" delay={.2}>
-                <Separator className = "cta-subtitle"/>
+            {/* Decorative Divider: mx-auto centers it, max-w-48 caps its width */}
+            <ScrollReveal animation="fadeIn" delay={0.2}>
+                <Separator className="mx-auto mb-5 max-w-48" />
             </ScrollReveal>
 
-            <ScrollReveal animation="fadeUp" delay={.2}>
+            <ScrollReveal animation="fadeUp" delay={0.2}>
                 <p className="cta-subtitle">
-                    Skip the line. Order premium single-origin coffee online and get it roasted to order.
-                    From our roastery to your doorstep in 1-2 business days.
+                    Skip the line. Order premium single-origin coffee online and get it roasted to
+                    order. From our roastery to your doorstep in 1-2 business days.
                 </p>
             </ScrollReveal>
 
-            {/* Perks - each item ripples in 0.1s after the last */}
-            <StaggerContainer staggerDelay={.1} className="cta-perks">
+            {/* Perks: each item ripples in 0.1s after the last */}
+            <StaggerContainer staggerDelay={0.1} className="cta-perks">
                 {perks.map((perk) => (
-                    //key must be unique
+                    // key must be unique!
                     <StaggerItem key={perk.label} animation="scaleUp" className="cta-perk-item">
                         <span className="cta-perk-icon">{perk.icon}</span>
                         <span className="cta-perk-label">{perk.label}</span>
@@ -136,40 +135,43 @@ export default function CtaSectoin() {
                 ))}
             </StaggerContainer>
 
-
-            {/* buttons - accent = primary action, ghost = secondary */}
-            <ScrollReveal animation="fadeUp" delay={.15}>
+            {/* Buttons: accent = primary action, ghost = secondary*/}
+            <ScrollReveal animation="fadeUp" delay={0.15}>
                 <div className="cta-buttons">
-                    <Button  variant="accent" size="lg"> 
-                        Order Now ☕
+                    <Button variant="accent" size="lg">
+                        Order Now
                     </Button>
-                    <Button  variant="ghost" size="lg"> 
+                    <Button variant="ghost" size="lg">
                         View Full Menu
                     </Button>
                 </div>
             </ScrollReveal>
 
-            
-            {/* stats - each counts up from 0, dividers between */}
-            <ScrollReveal animation="fadeUp" delay={.2}>
+            {/* Stats - each counts up from 0, dividers between */}
+            <ScrollReveal animation="fadeUp" delay={0.2}>
                 <div className="cta-stats">
                     <div className="cta-stat">
                         <span className="cta-stat-number">
-                            <AnimatedCounter target={15} suffix="+"/>
+                            <AnimatedCounter target={15} suffix="+" />
                         </span>
                         <span className="cta-stat-label">Origins</span>
                     </div>
-                    <div className="cta-stat-divider"/>
+
+                    <div className="cta-stat-divider" />
+
                     <div className="cta-stat">
                         <span className="cta-stat-number">
-                            <AnimatedCounter target={2400} suffix="+"/>
+                            <AnimatedCounter target={2400} suffix="+" />
                         </span>
                         <span className="cta-stat-label">Happy Customers</span>
                     </div>
-                    <div className="cta-stat-divider"/>
+
+                    <div className="cta-stat-divider" />
+
                     <div className="cta-stat">
                         <span className="cta-stat-number">
-                            <AnimatedCounter target={48} suffix="hr"/>
+                            {/* suffix makes this read "48hr" */}
+                            <AnimatedCounter target={48} suffix="hr" />
                         </span>
                         <span className="cta-stat-label">Fresh Delivery</span>
                     </div>
@@ -177,4 +179,4 @@ export default function CtaSectoin() {
             </ScrollReveal>
         </div>
     );
-};
+}

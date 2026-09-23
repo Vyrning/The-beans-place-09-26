@@ -83,7 +83,7 @@ export default function App(){
             {/* Featurees /Carousel */}
             <section className= "features bg-features" id="shop">
 
-            <FeaturesSection/>
+                 <FeaturesSection/>
 
             </section>
             
@@ -109,11 +109,11 @@ export default function App(){
 
             {/* Contact */}
             <section className = "bga-cta" id="contact">
-            <ContactSection />
+                <ContactSection />
             </section>
 
             {/* Footer */}
-            <section className = "bga-cta" id="footer">
+            <section className = "bga-footer">
                 <FooterSection/>
             </section>
             

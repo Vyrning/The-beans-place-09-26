@@ -35,12 +35,17 @@
 //   Separator, Input (+ Textarea), Button
 
 /* --- YOUR IMPORTS GO HERE --- */
-import {useState, useEffect, useRef} from "react";
-import {motion, useMotionValue, useSpring, useTransform} from "framer-motion";
+// useState -> re-renders on change; useEffect -> runs after render;
+// useRef -> holds a DOM reference across renders
+import { useState, useEffect, useRef } from "react";
+// useMotionValue -> changes without re-rendering (ideal for mouse positions)
+// useSpring -> eases a value into place; useTransform -> maps one range to another
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import ScrollReveal from "./ui/ScrollReveal";
 import { StaggerContainer, StaggerItem } from "./ui/ScrollReveal";
 import Separator from "./ui/Separator";
-import Input, {Textarea} from "./ui/Input";
+// Input is the default export; TextArea is an extra import from the same file
+import Input, { Textarea } from "./ui/Input";
 import Button from "./ui/Button";
 
 // STEP 2: Contact channels data (outside the component)
@@ -60,7 +65,6 @@ import Button from "./ui/Button";
 
 /* --- YOUR CONTACT DATA GOES HERE --- */
 
-
 // STEP 3: TiltCard sub-component (ADVANCED)
 // This creates a 3D tilt effect that follows the mouse.
 //
@@ -75,7 +79,6 @@ import Button from "./ui/Button";
 // }
 
 /* --- YOUR TILTCARD COMPONENT GOES HERE --- */
-
 
 // STEP 4: ContactFormInline sub-component
 // An animated contact form with validation.
@@ -104,7 +107,6 @@ import Button from "./ui/Button";
 // }
 
 /* --- YOUR CONTACTFORMINLINE COMPONENT GOES HERE --- */
-
 
 // STEP 5: Create and export ContactSection (main component)
 // export default function ContactSection() { ... }
@@ -142,19 +144,11 @@ import Button from "./ui/Button";
 //   </div>
 
 /* --- YOUR COMPONENT CODE GOES HERE --- */
-
-
-//Data for the four "ways to reach us" cards.
-// name/detail -> card text icon -> inline svg
-//gradient ->  icon title color accentColor -> the bar down the card's edge
-//action/href -> where it links 
-
-
 const contactChannels = [
     {
-        name:"Visit Our Roastery",
-        icon:(
-             <svg
+        name: "Visit Our Roastery", //"current color" makes the icon inherit the surrounding text color
+        icon: (
+            <svg
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -174,9 +168,9 @@ const contactChannels = [
         ),
         gradient: "from-amber-700 to-amber-500",
         accentColor: "var(--amber)",
-        detail: "Beans Place, Strasburg, CO 830136",
+        detail: "Beans Place, Strasburg, CO 80136",
         action: "Get Directions",
-        href: "https://maps.google.com/?q=Beans+Place+Strasburg+CO",
+        href: "https://maps.google.com/?q=Beans+Place+Strasburg+CO"
     },
     {
         name: "Opening Hours",
@@ -198,12 +192,12 @@ const contactChannels = [
         accentColor: "#ca8a04",
         detail: "Mon-Fri: 7am-6pm | Sat-Sun: 8am-4pm",
         action: "Plan Your Visit",
-        href: "#contact" //link just jumps to that section of the page
+        href: "#contact" // a "#" link just jumps to that section of this page
     },
     {
         name: "Email Us",
         icon: (
-                   <svg
+            <svg
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -216,16 +210,16 @@ const contactChannels = [
                 />
             </svg>
         ),
-        gradient:"from-orange-700 to-orange-500",
+        gradient: "from-orange-700 to-orange-500",
         accentColor: "#c2410c",
-        detail:"hello@thebeansplace.com",
+        detail: "hello@thebeansplace.com",
         action: "Send Email",
-        href: "mailto:hello@thebeansplace.com" //opens their email app, pre-addressed
+        href: "mailto:hello@thebeansplace.com" // open their email app, pre-addressed
     },
     {
         name: "Call Us",
         icon: (
-               <svg
+            <svg
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -238,167 +232,167 @@ const contactChannels = [
                 />
             </svg>
         ),
-        gradient:"from-stone-700 to-stone-500",
+        gradient: "from-stone-700 to-stone-500",
         accentColor: "#78716c",
-        detail:"(303) 555-BEAN",
+        detail: "(303) 555-BEAN",
         action: "Call Now",
-        href: "tel:+13035552326" //opens their email app, pre-addressed
+        href: "tel:+1-(303)-555-2326" // phones can dial straight from the page
     }
 ];
 
+// Tilt Card
+// Wrapper that tilts its content in 3D toward the mouse. Local to this file
+//  children/className -> the card content and its CSS classes
+//  href/target/rel -> if href is given, teh wrapper becomes a link
 
-//Tiltcard
-//Wrapper that its contents in 3D toward the mouse. Local to this file
-// children/className -> the card content and its css Classes
-//href/target/rel    -> if href is given, the wrapper becomes a link
-
-
-function TiltCard({children, className, href, target, rel}){
+function TiltCard({ children, className, href, target, rel }) {
     const ref = useRef(null);
-        //mouse position inside the card as a fraction
-        //(right/bottom). motion values. so updating them skips a re-render
-        const x = useMotionValue(0);
-        const y = useMotionValue(0);
+    // Mouse position inside the card as a fraction: -0.5 (left/top) to +0.5
+    // (right/bottom). Motion values, so updating them skips a re-render
 
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
 
-        //rotatex is reversed [6. -6] so moving the mouse down tips the top
-        //of card away from you - makes it look 3D
-        const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [6,-6]), {stiffness: 200, damping: 20})
-        const rotateY = useSpring(useTransform(y, [-0.5, 0.5], [-6,6]), {stiffness: 200, damping: 20})
+    // Fractions -> rotation angles, smoothed by a spring (higher damping settles faster).
+    // rotateX is reversed [6, -6] so moving the mouse down tips the top of the card away from you
+    const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [6, -6]), {
+        stiffness: 200,
+        damping: 20
+    });
+    const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-6, 6]), {
+        stiffness: 200,
+        damping: 20
+    });
 
-        function handleMouse(e) {
-            const rect = ref.current.getBoundingClientRect();
-            //window coordinates -> card-relative -> 0-1 fraction -> recenterd on 0
-            x.set((e.clientX - rect.left) / rect.width - 0.5);
-            y.set((e.clientX - rect.top) / rect.height - 0.5);
-        };
+    function handleMouse(e) {
+        const rect = ref.current.getBoundingClientRect();
+        // Window coords -> card-relative -> 0 to 1 fraction -> recentered on 0
+        x.set((e.clientX - rect.left) / rect.width - 0.5);
+        y.set((e.clientY - rect.top) / rect.height - 0.5);
+    }
 
-        //reset on leave so the card springs back flat
-        function handleLeave(){
-            x.set(0);
-            y.set(0);
-        };
+    // Reset on leave so the card springs back flat
+    function handleLeave() {
+        x.set(0);
+        y.set(0);
+    }
 
+    // <a> if we were given a link, otherwise <div>. The capital T matters -
+    // React treats lowercase names as plain html tags
+    const Tag = href ? motion.a : motion.div;
 
-        //<a> if we were given a link, otherwise <div>. the capital matters
-        //React treats lowercase names as plain HTML tags.
-        const Tag = href ? motion.a : motion.div;
+    return (
+        <Tag
+            ref={ref}
+            href={href}
+            target={target}
+            rel={rel}
+            onMouseMove={handleMouse}
+            onMouseLeave={handleLeave}
+            // transformPerspective = how deep the 3D looks: smaller exaggerates it
+            style={{ rotateX, rotateY, transformPerspective: 600 }}
+            className={className}>
+            {children}
+        </Tag>
+    );
+}
 
-        return (
-            <Tag
-                ref={ref}
-                href={href}
-                target={target}
-                rel={rel}
-                onMouseMove={handleMouse}
-                onMouseLeave={handleLeave}
-                //transforPerspective = how deep the 3D looks: smaller exaggerates it
-                style={{rotateX, rotateY, transformPerspective: 600}}
-                className={className}
-            >
-                {children}
-            </Tag>
-        );
-};
+// Contact Form
+// The message form in the left column
+function ContactFormInline() {
+    // All four fields in one object. These keys must match the "name" props on the Inputs below - that what makes handleChange work.
+    const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
 
+    const [status, setStatus] = useState(null);
 
-//the message form in the left column
-function ContactFormInline(){
-
-
-
-    //all four fields in one object. these keys must match the "name" props
-    //on the inputs below - thats what makes handleChange work.
-    const [formData, setFormData] = useState({name: "", email: "", subject: "", message: ""});
-    const [status, setStatus] = useState(null); //null | sending | sent | error
-    //fields the user has visited and left. Errors only show for these so
-    //the form doeesnt turn red before theyve typed anything
+    // Fields the user has visited and left. Errors only show for these, so the form doesn't turn red before they've typed anything
     const [touched, setTouched] = useState({});
 
-
     const handleChange = (e) => {
-        const {name, value} = e.target
-        //copy the old object, overwrite just this field. [name] in brackets
-        //means "use the value of name as the key"
-        setFormData((prev) => ({...prev, [name]: value}))
+        const { name, value } = e.target;
+        // Copy the old object, overwrite just this field. [name] in brackets means "use the VALUE of name as the key"
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    //blur fires on leaving a field - marks it as visited
+    // "blur" fires on leaving a field - mark it as visited
     const handleBlur = (e) => {
-        setTouched((prev => ({...prev, [e.target.name]: true})));
+        setTouched((prev) => ({ ...prev, [e.target.name]: true }));
     };
 
     const handleSubmit = async (e) => {
-        //stop the browser reloading the page
+        // Stop the browser from reloading the page
         e.preventDefault();
 
-        //touch every field so all missing ones light up at once
-        setTouched({name: true, email: true, subject: true, message: true});
-        
-        //required fields only - subject is optional
-        if(!formData.name || !formData.email || !formData.message) return;
+        // Touch every field so all missing ones light up at once
+        setTouched({ name: true, email: true, subject: true, message: true });
+
+        // Required fields only - subject is optional
+        if (!formData.name || !formData.email || !formData.message) return;
 
         setStatus("sending");
 
-        try { 
-            // placehoilder: sends nothing, just fakes 1.2s of network
-            //swap in real api call later
+        try {
+            // PLACEHOLDER: sends nothing, just fakes 1.2s of network
+            // Swap in a real API, but for now, this is just simulated
             await new Promise((resolve) => setTimeout(resolve, 1200));
             setStatus("sent");
-            //clear the form
-            setFormData({name: "", email: "", subject: "", message: ""})
-            setTouched([]);
+            // Clear the form, then drop back to the normal button after 4s
+            setFormData({ name: "", email: "", subject: "", message: "" });
+            setTouched({});
             setTimeout(() => setStatus(null), 4000);
-        }catch{
-            setStatus("error")
+        } catch {
+            setStatus("error");
             setTimeout(() => setStatus(null), 4000);
         }
     };
 
-
-   return (
-
+    return (
         <motion.form
-            onSubmit = {handleSubmit}
-            className = "contact-form-card"
-            initial = {{opacity: 0, y: 40}}
-            whileInView = {{opacity: 1, y: 0}}
-            viewport={{once: true}}
-            transition={{duration: 0.6, delay: 0.1}}
-        >
+            onSubmit={handleSubmit}
+            className="contact-form-card"
+            // whileInView animates on scroll-into-view rather than page load;
+            // once: true means it plays the first time only
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}>
             <div className="mb-6">
                 <h3 className="contact-form-title">Send a Message</h3>
                 <p className="contact-form-subtitle">
-                    We'd love to hear from you. Fill out the form and we'll get back to you within 24 hours.
+                    We'd love to hear from you. Fill out the form and we'll get back within 24
+                    hours.
                 </p>
             </div>
 
-
-            {/* name and email side by side */}
+            {/* Name and Email side by side (columns come from the CSS grid) */}
             <div className="contact-form-grid">
-                <Input 
-                label="Your Name"
-                id="contact-name"
-                name="name"
-                placeholder="John Doe"
-                value={formData.name}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={touched.name && !formData.name ? "Name is required" : undefined}
+                <Input
+                    label="Your name"
+                    id="contact-name"
+                    name="name"
+                    placeholder="John Doe"
+                    // value = onChange = a "controlled input": React holds the text and the box always shows what state says
+                    value={formData.name}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    // Error only once visited AND still empty: undefined = no error
+                    error={touched.name && !formData.name ? "Name is required" : undefined}
                 />
-                <Input 
-                label="Email Address"
-                id="contact-email"
-                name="email"
-                placeholder="john@example.com"
-                value={formData.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={touched.email && !formData.email ? "Email is required" : undefined}
+                <Input
+                    label="Email Address"
+                    id="contact-email"
+                    name="email"
+                    // type="email" also gets phones to show the @ key
+                    type="email"
+                    placeholder="john@example.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={touched.email && !formData.email ? "Email is required" : undefined}
                 />
             </div>
 
-
+            {/* Subject - optional, so no error prop */}
             <div className="mt-4">
                 <Input
                     label="Subject"
@@ -410,9 +404,9 @@ function ContactFormInline(){
                 />
             </div>
 
-
+            {/* TextArea instead of Input so the message can run several lines */}
             <div className="mt-4">
-                <Textarea 
+                <Textarea
                     label="Message"
                     id="contact-message"
                     name="message"
@@ -425,163 +419,203 @@ function ContactFormInline(){
                 />
             </div>
 
-
-
-            <div className= "mt-6 flex items-center gap-4">
+            <div className="mt-6 flex items-center gap-4">
                 <Button
+                    // type="submit" is what triggers the form's onSubmit
                     type="submit"
                     variant="accent"
                     size="lg"
-                    className="contact-form-submit"
-                    disabled={status === "sending"}
-                >
-                    {/* sending -> spinner, sent -> tick, otherwise normal text */}
+                    className="contactd-form-submit"
+                    // Greyed out mid-send so nobody double submits
+                    disabled={status === "sending"}>
+                    {/* Label comes from 'status' : sending -> spinner, sent -> tick, otherwise the normal text */}
                     {status === "sending" ? (
                         <span className="flex items-center gap-2">
-                            {/* animate-spin with tailwind */}
-                            <svg className="animate-spin w-4 h-4" viewbox="0 0 24 24" fill="none">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                                 <path
+                            {/* animate-spin (Tailwiund) rotates this forever */}
+                            <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+                                {/* Faint full ring... */}
+                                <circle
+                                    className="opacity-25"
+                                    cx="12"
+                                    cy="12"
+                                    r="10"
+                                    stroke="currentColor"
+                                    strokeWidth="4"
+                                />
+                                {/* ...plus the bright quarter-arc that makes the spin visible */}
+                                <path
                                     className="opacity-75"
                                     fill="currentColor"
-                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                                />
                             </svg>
                             Sending...
                         </span>
                     ) : status === "sent" ? (
                         <span className="flex items-center gap-2">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 1314 4L19 7"/>
+                            {/* Checkmark */}
+                            <svg
+                                className="w-4 h-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2.5}
+                                    d="M5 13l4 4L19 7"
+                                />
                             </svg>
-                            Message Sent !
+                            Message Sent!
                         </span>
-                    ): (
+                    ) : (
                         "Send Message"
                     )}
                 </Button>
 
-
-
+                {/* Error note beside the button, only after a failure */}
                 {status === "error" && (
                     <motion.span
-                        initial={{opacity: 0, x: -10}}
-                        animate={{opacity: 1, x: 0}}
-                        className="text-sm text-red-400"
-                    >
-                        Something went wroing. Please try again.
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="text-sm text-red-400">
+                        Something went wrong. Please try again.
                     </motion.span>
                 )}
             </div>
         </motion.form>
     );
-};
+}
 
 export default function ContactSection() {
-    
-
-    //pointer position in the window for the glow that follows the cursor
-    const [mousePos, setMousePos] = useState({x:0, y:0});
+    // Pointer position in the window, for the flow that follows the cursor
+    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const sectionRef = useRef(null);
 
-
-    useEffect(() =>{
-        const handleMouseMove = (e) => setMousePos({x: e.clientX, y: e.clientY});
-
+    useEffect(() => {
+        const handleMouseMove = (e) => setMousePos({ x: e.clientX, y: e.clientY });
         window.addEventListener("mousemove", handleMouseMove);
-        //clean up
+        // Cleanup on unmount so no dead listener is left behind
         return () => window.removeEventListener("mousemove", handleMouseMove);
+        // Empty [] = set this up once, not on every re-render
     }, []);
 
-    
-    return(
-
+    return (
         <div className="contact-section-wrap" ref={sectionRef}>
+            {/* Decorative Only - three blurred orbs and a faint grid, positioned and animated by CSS. Empty divs: they exist to be styled */}
             <div className="contact-bg-effects">
-                <div className="contact-bg-orb contact-bg-orb--1"/>
-                <div className="contact-bg-orb contact-bg-orb--2"/>
-                <div className="contact-bg-orb contact-bg-orb--3"/>
-                <div className="contact-bg-grid"/>
+                <div className="contact-bg-orb contact-bg-orb--1" />
+                <div className="contact-bg-orb contact-bg-orb--2" />
+                <div className="contact-bg-orb contact-bg-orb--3" />
+                <div className="contact-bg-grid" />
             </div>
 
-
-
-            <div className ="contact-inner">
-                {/* header */}
+            <div className="contact-inner">
+                {/* Header */}
                 <ScrollReveal animation="fadeUp" className="contact-header">
+                    {/* Pill above the heading; scales up slightly as it appears */}
                     <motion.div
                         className="contact-pill"
-                        initial={{opacity: 0, scale: 0.9}}
-                        whileiInView={{opacity: 1, scale: 1}}
-                        viewport={{once: true}}
-                    >
-                        <span>✦ Connect and Collaborate</span>
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}>
+                        <span>Connect and Collaborate</span>
                     </motion.div>
 
-                    <h1 className="h1-stack" style={{ color: "var(--cream}" }}>
-                       Lets Get In Touch 
-                        <br/>
+                    {/* Inline styles override the heading colors to cream/amber */}
+                    <h1 className="h1-stack" style={{ color: "var(--cream)" }}>
+                        GET IN
+                        <br />
                         <span className="muted" style={{ color: "var(--amber)" }}>
                             TOUCH
                         </span>
                     </h1>
 
-
-                    <p className="lead--light" style={{maxWidth: "52ch", margin: "10px auto 0"}}>
+                    {/* "52ch" ~ 52 characters per line - more of a comfortable measure */}
+                    <p className="lead--light" style={{ maxWidth: "52ch", margin: "10px auto 0" }}>
                         Whether you're ordering beans, planning an event, or just want to say hello
-                        - we'd love to hear from you.
+                        - we'd love to hear from you
                     </p>
 
-                    <Separator className="mt-4 mb-2 mx-auto max-w-48"/>
+                    <Separator className="mt-4 mb-2 mx-auto max-w-48" />
                 </ScrollReveal>
 
-
-
+                {/* Left: form | Right: cards + social */}
                 <div className="contact-layout">
                     <div className="contact-form-col">
                         <ContactFormInline />
                     </div>
 
                     <div className="contact-info-col">
-                        <StaggerContainer className="contact-info-cards" staggerDelay={.1}>
+                        {/* Each card animates 0.1s after the last */}
+                        <StaggerContainer className="contact-info-cards" staggerDelay={0.1}>
                             {contactChannels.map((channel) => (
+                                //  key must be unique
                                 <StaggerItem key={channel.name} animation="fadeUp">
                                     <TiltCard
                                         href={channel.href}
-                                        target={channel.href.startsWith("http") ? "_blank" : undefined}
-                                        rel={channel.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                                        className="contact-card-link"
-                                    >
-                                    <div className="contact-card">
-                                        <div className="contact-card-accent" style={{background: channel.accentColor}} />
-                                        <div className="contact-card-content">
-                                            <div className={`contact-card-icon bg-linear-to-br ${channel.gradient}`}>
-                                                {channel.icon}
+                                        target={
+                                            channel.href.startsWith("http") ? "_blank" : undefined
+                                        }
+                                        rel={
+                                            channel.href.startsWith("http")
+                                                ? "noopener noreferrer"
+                                                : undefined
+                                        }
+                                        className="contact-card-link">
+                                        <div className="contact-card">
+                                            {/* Edge bar - inline style because the color comes from the data */}
+                                            <div
+                                                className="contact-card-accent"
+                                                style={{ background: channel.accentColor }}
+                                            />
+                                            <div className="contact-card-content">
+                                                {/* Fixed classes + this channel's gradient, fading to the bottom-right */}
+                                                <div
+                                                    className={`contact-card-icon bg-linear-to-br ${channel.gradient}`}>
+                                                    {channel.icon}
+                                                </div>
+                                                <div className="contact-card-text">
+                                                    <h3 className="contact-card-title">
+                                                        {channel.name}
+                                                    </h3>
+                                                    <p className="contact-card-detail">
+                                                        {channel.detail}
+                                                    </p>
+                                                </div>
+                                                {/* Arrow hinting the card is clickable */}
+                                                <div className="contact-card-arrow">
+                                                    <svg
+                                                        className="w-4 h-4"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth={2}
+                                                            d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                                        />
+                                                    </svg>
+                                                </div>
                                             </div>
-                                            <div className="contact-card-text">
-                                                <h3 className="contact-card-title">{channel.name}</h3>
-                                                <p className="contact-card-detail">{channel.detail}</p>
-                                            </div>
-                                            <div className="contact-card-arrow">
-                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 01-4 4m4-4H3" />
-                                                </svg>
-                                            </div>
-                                        </div>
 
-                                        <div className="contact-card-shimmer" />
-                                    </div>
+                                            {/* Light sweep on hover (CSS) */}
+                                            <div className="contact-card-shimmer" />
+                                        </div>
                                     </TiltCard>
                                 </StaggerItem>
                             ))}
                         </StaggerContainer>
 
-
-                        
-                        <ScrollReveal animation="fadeUp" delay={.4} className="contact-social-row">
+                        {/* Social Links */}
+                        <ScrollReveal animation="fadeUp" delay={0.4} className="contact-social-row">
                             <span className="contact-social-label">Follow Us</span>
                             <div className="contact-social-icons">
+                                {/* Written inline rather than up top like contactChannels —
+                                    three short entries used in this one spot */}
                                 {[
-                                 {
+                                    {
                                         name: "Instagram",
                                         href: "https://instagram.com",
                                         icon: (
@@ -623,29 +657,27 @@ export default function ContactSection() {
                                         href={social.href}
                                         target="_blank"
                                         rel="noopener noreferrer"
+                                        // aria-label: the link is icon-only, so screen
+                                        // readers need something to announce
                                         aria-label={social.name}
-                                        className="contact-social-link"
-                                    >
+                                        className="contact-social-link">
                                         {social.icon}
                                     </a>
                                 ))}
                             </div>
                         </ScrollReveal>
-
-
                     </div>
                 </div>
             </div>
-            <div 
+
+            {/* Glow trailing the cursor (desktop only).  */}
+            <div
                 className="contact-mouse-glow"
                 style={{
                     left: `${mousePos.x - 192}px`,
-                    top: `${mousePos.y -192}px`
+                    top: `${mousePos.y - 192}px`
                 }}
-            />                    
+            />
         </div>
-
-
-
     );
 };
