@@ -511,14 +511,14 @@ export default function ContactSection() {
                     <motion.div
                         className="contact-pill"
                         initial={{opacity: 0, scale: 0.9}}
-                        whileiInView={{opacity: 1, scale: 1}}
+                        whileInView={{opacity: 1, scale: 1}}
                         viewport={{once: true}}
                     >
                         <span>✦ Connect and Collaborate</span>
                     </motion.div>
 
                     <h1 className="h1-stack" style={{ color: "var(--cream}" }}>
-                       Lets Get In Touch 
+                        GET IN 
                         <br/>
                         <span className="muted" style={{ color: "var(--amber)" }}>
                             TOUCH
@@ -581,7 +581,7 @@ export default function ContactSection() {
                             <span className="contact-social-label">Follow Us</span>
                             <div className="contact-social-icons">
                                 {[
-                                 {
+                                    {
                                         name: "Instagram",
                                         href: "https://instagram.com",
                                         icon: (
