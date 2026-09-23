@@ -516,10 +516,10 @@ export default function ContactSection() {
                         <span>✦ Connect and Collaborate</span>
                     </motion.div>
 
-                    <h1 className="h1-stack" style={{color: "var(--cream}"}}>
+                    <h1 className="h1-stack" style={{ color: "var(--cream}" }}>
                        Lets Get In Touch 
                         <br/>
-                        <span className="muted" style={{color: "var(--amber)"}}>
+                        <span className="muted" style={{ color: "var(--amber)" }}>
                             TOUCH
                         </span>
                     </h1>
