@@ -438,7 +438,7 @@ function ContactFormInLine(){
                     {status === "sending" ? (
                         <span className="flex items-center gap-2">
                             {/* animate-spin with tailwind */}
-                            <svg className="animate-spin w-4 h-4" viewbox="0 0 24 24" file="none">
+                            <svg className="animate-spin w-4 h-4" viewbox="0 0 24 24" fill="none">
                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
                                  <path
                                     className="opacity-75"
@@ -450,7 +450,7 @@ function ContactFormInLine(){
                     ) : status === "sent" ? (
                         <span className="flex items-center gap-2">
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 1314 4L19 7"/>
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/>
                             </svg>
                             Message Sent !
                         </span>
@@ -537,12 +537,12 @@ export default function ContactSection() {
 
                 <div className="contact-layout">
                     <div className="contact-form-col">
-                        <ContactFormInline />
+                        <ContactFormInLine />
                     </div>
 
                     <div className="contact-info-col">
                         <StaggerContainer className="contact-info-cards" staggerDelay={.1}>
-                            {contactChannels.map((channel) => 
+                            {contactChannels.map((channel) => (
                                 <StaggerItem key={channel.name} animation="fadeUp">
                                     <TiltCard
                                         href={channel.href}
@@ -550,16 +550,65 @@ export default function ContactSection() {
                                         rel={channel.href.startsWith("http") ? "noopener ferrer" : undefined}
                                         className="contact-card-link"
                                     >
+                                    <div className="contact-card">
+                                        <div className="contact-card-accent" style={{background: channel.accentColor}} />
+                                        <div className="contact-card-content">
+                                            <div className={`contact-card-icon bg-gradient-to-br ${channel.gradient}`}>
+                                                {channel.icon}
+                                            </div>
+                                            <div className="contact-card-text">
+                                                <h3 className="contact-card-title">{channel.name}</h3>
+                                                <p className="contact-card-detail">{channel.detail}</p>
+                                            </div>
+                                            <div className="contact-card-arrow">
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                                </svg>
+                                            </div>
+                                        </div>
 
-
-
+                                        <div className="contact-card-shimmer" />
+                                    </div>
                                     </TiltCard>
                                 </StaggerItem>
-                            )};
+                            ))}
                         </StaggerContainer>
+
+
+                        
+                        <ScrollReveal animation="fadeUp" delay={.4} className="contact-social-row">
+                            <span className="contact-social-label">Follow Us</span>
+                            <div className="contact-social-icons">
+                                {[
+                                    {name: "Instagram", href:"https://instagram.com", icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4."/>
+                                    </svg> }
+                                ].map((social) => (
+                                    <a
+                                        key={social.name}
+                                        href={social.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={social.name}
+                                        className="contact-social-link"
+                                    >
+                                        {social.icon}
+                                    </a>
+                                ))}
+                            </div>
+                        </ScrollReveal>
+
+
                     </div>
                 </div>
             </div>
+            <div 
+                className="contact-mouse-glow"
+                style={{
+                    left: `${mousePos.x - 192}px`,
+                    top: `${mousePos.y -192}px`
+                }}
+            />                    
         </div>
 
 

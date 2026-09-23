@@ -37,6 +37,7 @@ import FeaturesSection from "./components/FeaturesSection";
 import ProductShowcase from "./components/ProductShowcase";
 import AboutSection from "./components/AboutSection";
 import CtaSection from "./components/CtaSection";
+import ContactSection from "./components/ContactSection";
 
 // STEP 2: Create and export the App component
 // Use: export default function App() { ... }
@@ -108,7 +109,7 @@ export default function App(){
 
             {/* Contact */}
             <section className = "bga-cta" id="contact">
-
+                <ContactSection />
             </section>
 
             {/* Footer */}
